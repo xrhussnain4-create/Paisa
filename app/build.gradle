@@ -1,0 +1,20 @@
+plugins { id 'com.android.application' }
+android {
+    namespace 'com.ali.paisa'
+    compileSdk 34
+    defaultConfig {
+        applicationId 'com.ali.paisa'
+        minSdk 26
+        targetSdk 34
+        versionCode 1
+        versionName '1.0'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+dependencies {
+    implementation 'androidx.work:work-runtime:2.9.1'
+    implementation 'androidx.webkit:webkit:1.11.0'
+}

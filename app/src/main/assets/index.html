@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Paisa</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--card:#fff;--ink:#10201d;--mute:#6b7b78;--line:#e8eeed;--chip:#f1f5f4;--teal:#35c2a1;--teal2:#1e9c80;--earn:#1e9c80;--spend:#d0495a;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1817;--card:#13221f;--ink:#e9f4f1;--mute:#8fa6a1;--line:#1f332f;--chip:#182a27;--earn:#4fd6b4;--spend:#f27b8b}}
+:root[data-theme="dark"]{--bg:#0d1817;--card:#13221f;--ink:#e9f4f1;--mute:#8fa6a1;--line:#1f332f;--chip:#182a27;--earn:#4fd6b4;--spend:#f27b8b}
+html,body{height:100%}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:15px}
+#app{max-width:430px;height:100%;margin:0 auto;display:flex;flex-direction:column;position:relative;background:var(--bg)}
+#view{flex:1;overflow-y:auto;padding:14px 16px 24px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--teal2);outline-offset:2px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.hi{display:flex;align-items:center;gap:10px;background:var(--chip);border:0;border-radius:40px;padding:6px 14px 6px 6px;font-weight:600}
+.av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#35c2a1,#8ee6c8);display:grid;place-items:center;color:#10201d;font-weight:800}
+.bell{width:42px;height:42px;border-radius:50%;background:var(--chip);border:0;display:grid;place-items:center}
+.hero{position:relative;border-radius:22px;padding:18px 0 0;overflow:hidden;color:#10201d;background:linear-gradient(180deg,#7fe3c4 0%,#c3efc8 58%,#f6f8cc 100%)}
+.hero::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(172deg,rgba(255,255,255,.16) 0 2px,transparent 2px 22px);pointer-events:none}
+.hero>*{position:relative}
+.hl{display:flex;align-items:center;gap:6px;padding:0 18px;font-size:.85rem;font-weight:600;opacity:.75}
+.big{padding:2px 18px 8px;font-size:2.3rem;font-weight:800;letter-spacing:-.02em}
+.chip{margin:0 18px;display:inline-flex;gap:6px;background:#fff;border-radius:8px;padding:4px 9px;font-size:.78rem;font-weight:700;border:1px solid rgba(0,0,0,.06)}
+.plus{position:absolute!important;right:14px;top:14px;width:36px;height:36px;border-radius:50%;border:0;background:rgba(255,255,255,.35);display:grid;place-items:center;color:#10201d}
+.bars{height:150px;display:flex;align-items:flex-end;justify-content:space-around;padding:0 14px;margin-top:16px}
+.bw{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;width:19%}
+.bw em{font-style:normal;font-size:.68rem;font-weight:700;margin-bottom:4px;white-space:nowrap}
+.bw i{display:block;width:100%;border-radius:6px 6px 0 0;background:linear-gradient(180deg,#43cfae,#8fe6cf);min-height:6px}
+.strip{background:#35c2a1;display:flex;justify-content:space-around;padding:8px 6px;color:#fff;font-size:.72rem;font-weight:700;min-height:34px}
+.strip span{width:19%;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.emptyb{align-self:center;font-size:.85rem;font-weight:600;opacity:.7;padding-bottom:40px}
+.upd{color:var(--mute);font-size:.82rem;margin:12px 0}
+.sec{border-top:1px solid var(--line);padding:16px 0}
+.sec h3{margin:0 0 12px;font-size:1.05rem;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.lb{color:var(--mute);font-size:.88rem}
+.v{font-size:1.3rem;font-weight:700;margin-top:2px}
+.small{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.small .v{font-size:1rem}
+.e{color:var(--earn)}.s{color:var(--spend)}
+.prog{height:10px;background:var(--chip);border-radius:6px;overflow:hidden;margin:10px 0 6px}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,#35c2a1,#8ee6c8);border-radius:6px}
+.cb{display:flex;align-items:center;gap:8px;margin:8px 0;font-size:.85rem}
+.cb span:first-child{width:96px;flex:none}
+.cb i{display:block;height:8px;border-radius:4px;background:var(--spend);opacity:.85}
+.cb span:last-child{margin-left:auto;font-weight:600}
+nav{display:flex;justify-content:space-around;align-items:flex-end;background:var(--bg);border-top:1px solid var(--line);padding:8px 4px calc(8px + env(safe-area-inset-bottom,0px))}
+nav button{background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:.7rem;color:var(--mute);width:20%;padding:4px 0;font-weight:600}
+nav button[aria-current="page"]{color:var(--teal2)}
+nav .mid{margin-top:-26px}
+nav .mid b{width:54px;height:54px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#8ee6c8,#35c2a1 60%,#1e9c80);display:grid;place-items:center;box-shadow:0 6px 16px rgba(30,156,128,.4);color:#fff}
+.pg h2{margin:4px 0 14px;font-size:1.4rem;font-weight:800}
+.seg{display:flex;gap:6px;margin-bottom:12px}
+.seg button{flex:1;padding:10px;border:1px solid var(--line);background:var(--chip);border-radius:12px;font-weight:700;font-size:.85rem}
+.seg button[aria-pressed="true"]{background:var(--teal2);border-color:var(--teal2);color:#fff}
+label{display:block;font-size:.78rem;color:var(--mute);font-weight:600;margin-bottom:4px}
+input,select{width:100%;padding:11px;border:1px solid var(--line);border-radius:12px;background:var(--chip);color:var(--ink);font:inherit}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.hint{min-height:1.3em;color:var(--mute);font-size:.85rem;margin:0 0 8px;font-weight:600}
+.go{width:100%;padding:13px;border:0;border-radius:14px;background:linear-gradient(90deg,#35c2a1,#1e9c80);color:#fff;font-weight:800}
+.item{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-top:1px solid var(--line)}
+.item small{display:block;color:var(--mute)}
+.item .r{text-align:right;white-space:nowrap}
+.item button{background:none;border:0;color:var(--mute);font-size:.75rem;text-decoration:underline;padding:0}
+.day{color:var(--mute);font-size:.8rem;font-weight:700;margin:14px 0 0}
+.chips{display:flex;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.chips button{border:1px solid var(--line);background:var(--chip);border-radius:20px;padding:7px 14px;font-weight:600;font-size:.82rem}
+.chips button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.conv{border-radius:20px;padding:20px;background:linear-gradient(180deg,#7fe3c4,#c3efc8);color:#10201d;margin-bottom:14px}
+.conv .big{padding:0;font-size:2.2rem}
+.conv input{background:rgba(255,255,255,.7);border-color:transparent;color:#10201d}
+.sheet{position:absolute;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:flex-end;z-index:5}
+.sheet[hidden]{display:none}
+.panel{width:100%;background:var(--bg);border-radius:22px 22px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px));max-height:92%;overflow-y:auto}
+.panel h3{margin:0 0 12px;display:flex;justify-content:space-between;font-size:1.1rem}
+.panel h3 button{background:none;border:0;color:var(--mute)}
+.toast{position:absolute;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:20px;font-size:.82rem;font-weight:600;z-index:9}
+.toast[hidden]{display:none}
+.emp{color:var(--mute);margin:8px 0}
+.link{background:none;border:0;color:var(--teal2);font-weight:700;padding:0}
+.row3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tr,.rc{padding:10px 0}
+.rc{border-top:1px solid var(--line)}
+.trh{display:flex;justify-content:space-between;align-items:center;font-size:.85rem}
+.badge{background:#f2c94c;color:#3d2f00;border-radius:12px;padding:2px 10px;font-size:.72rem;font-weight:800}
+.done .prog i{background:linear-gradient(90deg,#f2c94c,#35c2a1)}
+.sk{border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:12px}
+.sk.on{background:linear-gradient(180deg,rgba(53,194,161,.18),rgba(246,248,204,.12));border-color:var(--teal)}
+.skn{display:flex;align-items:baseline;gap:8px;margin:6px 0 2px}
+.skn b{font-size:3rem;font-weight:800;line-height:1;letter-spacing:-.03em}
+.skn span{color:var(--mute);font-weight:600}
+.dots{display:flex;justify-content:space-between;margin-top:6px}
+.dt{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:.66rem;color:var(--mute);font-weight:600}
+.dt i{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:.8rem;background:var(--chip)}
+.dt i.y{background:linear-gradient(135deg,#35c2a1,#1e9c80);color:#fff}
+.dt i.p{background:transparent;border:2px dashed var(--teal)}
+.tb{display:flex;gap:8px}
+.dr{margin:6px 0 10px}
+.drow{display:flex;gap:8px}
+.drow input{flex:1}
+.drow button{border:1px solid var(--line);background:var(--chip);border-radius:12px;padding:0 14px;font-weight:600}
+.dsum{border:1px solid var(--line);border-radius:16px;padding:14px;margin:6px 0 4px}
+.dsum.done{border-color:#f2c94c}
+.cc{display:inline-flex;align-items:center;border:1px solid var(--line);background:var(--chip);border-radius:20px;overflow:hidden}
+.cc button{border:0;border-radius:0;background:transparent;padding:7px 10px;font-weight:600;font-size:.82rem}
+.cc button[aria-pressed="true"]{background:var(--teal2);color:#fff}
+.cc .cx{padding:7px 9px 7px 2px;color:var(--mute);font-size:1rem;line-height:1}
+.cc button[aria-pressed="true"]+.cx{background:var(--teal2);color:#fff}
+.prog{position:relative;height:18px;border-radius:9px}
+.prog i{border-radius:9px}
+.pc{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(255,255,255,.92);color:#10201d;font-size:.66rem;font-weight:800;padding:0 7px;border-radius:9px;line-height:14px}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="view"></div>
+  <nav aria-label="Menu">
+    <button data-t="home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Home</button>
+    <button data-t="hist"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg>History</button>
+    <button class="mid" id="mid" aria-label="Nayi entry"><b><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></b>Add</button>
+    <button data-t="streak"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c1 4 5 6 5 11a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-6 1-10z"/></svg>Streak</button>
+    <button data-t="goal"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/></svg>Goals</button>
+  </nav>
+
+  <div class="sheet" id="sheet" hidden>
+    <div class="panel" role="dialog" aria-label="Nayi entry">
+      <h3>Nayi entry <button type="button" id="close" aria-label="Band karo">Band karo</button></h3>
+      <div class="seg">
+        <button type="button" id="tE" aria-pressed="true">Kamai</button>
+        <button type="button" id="tS" aria-pressed="false">Kharcha (PKR)</button>
+      </div>
+      <div class="row">
+        <div><label for="amt" id="amtL">Kitne rupay (PKR)</label><input id="amt" type="number" inputmode="decimal" min="0" step="any" placeholder="2800"></div>
+        <div><label for="date">Tareekh</label><input id="date" type="date"></div>
+      </div>
+      <div id="rS" hidden>
+        <label>Kis cheez par kharcha hua</label>
+        <div class="chips" id="catchips"></div>
+        <div class="drow" style="margin:4px 0 12px"><input id="catnew" type="text" maxlength="30" placeholder="Nayi category banao, jaise dawai"><button type="button" id="catadd">Banao</button></div>
+        <div style="margin-bottom:10px"><label for="note">Note (optional)</label><input id="note" type="text" placeholder="kya liya"></div>
+      </div>
+      <p class="hint" id="hint"></p>
+      <button class="go" type="button" id="save">Save karo</button>
+    </div>
+  </div>
+  <div class="toast" id="toast" hidden></div>
+</div>
+
+<script>
+(function(){
+  var KEY="paisa-app-v1", st={rate:280,items:[]}, tab="home", type="earn", filt="all", stamp=Date.now();
+  try{var r=localStorage.getItem(KEY); if(r){var p=JSON.parse(r); if(p&&p.items){st=p;}}}catch(e){}
+  var rec="m", hd="";
+  function isDark(){return st.theme?st.theme==="dark":!!(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches);}
+  function applyTheme(){document.documentElement.setAttribute("data-theme",isDark()?"dark":"light");}
+  function themeIcon(){return isDark()
+    ?'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>'
+    :'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 13A9 9 0 1 1 11 3a7 7 0 0 0 10 10z"/></svg>';}
+  if(!st.tg){st.tg={d:0,w:0,m:0};}
+  if(!st.tgUser){
+    if(st.tg.m===20000)st.tg.m=0;
+    Object.keys(st.snap||{}).forEach(function(k){if(k.charAt(0)==="m"&&st.snap[k]===20000)delete st.snap[k];});
+  }
+  if(!st.snap){st.snap={};}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}}
+  function wk(s){var d=new Date(s+"T00:00:00");d.setDate(d.getDate()-((d.getDay()+6)%7));return iso(d);}
+  function pkey(m,s){return m==="d"?s:m==="w"?wk(s):s.slice(0,7);}
+  function tgt(m,k){var s=st.snap[m+k];return s!==undefined?s:st.tg[m];}
+  function snapNow(){var t=iso(new Date());["d","w","m"].forEach(function(m){st.snap[m+pkey(m,t)]=st.tg[m];});save();}
+  function earnedNow(m){var k=pkey(m,iso(new Date()));return st.items.filter(function(i){return i.type==="earn"&&pkey(m,i.date)===k;}).reduce(function(s,i){return s+i.pkr;},0);}
+  function flags(){return ["d","w","m"].map(function(m){var t=st.tg[m];return t>0&&earnedNow(m)>=t;});}
+  function addP(m,k,n){
+    if(m==="m"){var a=k.split("-");return iso(new Date(+a[0],+a[1]-1+n,1)).slice(0,7);}
+    var d=new Date(k+"T00:00:00");d.setDate(d.getDate()+(m==="w"?7*n:n));return iso(d);
+  }
+  function emap(m){var o={};st.items.forEach(function(i){if(i.type==="earn"){var k=pkey(m,i.date);o[k]=(o[k]||0)+i.pkr;}});return o;}
+  function okp(m,k,o){var t=tgt(m,k);return t>0&&(o[k]||0)>=t;}
+  function strk(m){
+    var o=emap(m),cur=pkey(m,iso(new Date())),curOk=okp(m,cur,o),n=curOk?1:0,k=addP(m,cur,-1),i,best=0,run=0;
+    for(i=0;i<1000;i++){if(okp(m,k,o)){n++;k=addP(m,k,-1);}else break;}
+    if(st.items.length){
+      var first=pkey(m,st.items.reduce(function(a,b){return b.date<a?b.date:a;},"9999"));
+      for(k=first,i=0;k<=cur&&i<2000;i++,k=addP(m,k,1)){if(okp(m,k,o)){run++;if(run>best)best=run;}else if(k!==cur)run=0;}
+    }
+    return {cur:n,best:best,curOk:curOk,o:o};
+  }
+  function pbar(p){p=Math.max(0,Math.min(100,p||0));return '<div class="prog"><i style="width:'+p+'%"></i><b class="pc">'+Math.floor(p)+'%</b></div>';}
+  function prow(label,m){
+    var e=earnedNow(m),t=st.tg[m],sk=strk(m).cur;
+    if(!(t>0))return '<div class="tr"><div class="lb">'+label+'</div><div class="lb">Target set nahi <button class="link" type="button" data-go="goal">Set karo ›</button></div></div>';
+    var done=e>=t;
+    return '<div class="tr'+(done?' done':'')+'"><div class="trh"><span class="lb">'+label+(sk>0?' · streak '+sk:'')+'</span>'+(done?'<span class="badge">✓ Target pura</span>':'<span class="lb">'+fmt(t-e)+' baki</span>')+'</div><div class="v" style="font-size:1.05rem">'+fmt(e)+' <span class="lb">/ '+fmt(t)+'</span></div>'+pbar(Math.min(100,e/t*100))+'</div>';
+  }
+  function plabel(m,k){return m==="m"?new Date(k+"-01T00:00:00").toLocaleDateString("en-US",{month:"long",year:"numeric"}):m==="w"?"Hafta "+k+" se":k;}
+  var $=function(i){return document.getElementById(i);};
+  var fmt=function(n){return (n<0?"-":"")+"Rs "+Math.round(Math.abs(n)).toLocaleString("en-US");};
+  var iso=function(d){return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10);};
+  var esc=function(s){return String(s||"").replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});};
+  function toast(m){var t=$("toast");t.textContent=m;t.hidden=false;setTimeout(function(){t.hidden=true;},2800);}
+  function sum(a,b,t){return st.items.filter(function(i){return i.type===t&&i.date>=a&&i.date<=b;}).reduce(function(s,i){return s+i.pkr;},0);}
+  function dates(){var n=new Date(),w=new Date(n);w.setDate(n.getDate()-6);return {t:iso(n),w:iso(w),m:iso(new Date(n.getFullYear(),n.getMonth(),1)),n:n};}
+
+  function home(){
+    var d=dates(), E=sum("0","9",'earn'), S=sum("0","9","spend"), net=sum(d.t,d.t,"earn")-sum(d.t,d.t,"spend");
+    var days=[],dv={},mx=1;
+    for(var q=4;q>=0;q--){var dd=new Date(d.n);dd.setDate(dd.getDate()-q);var kk=iso(dd);days.push({k:kk,l:q===0?"Aaj":dd.toLocaleDateString("en-US",{weekday:"short"})});dv[kk]=sum(kk,kk,"earn");if(dv[kk]>mx)mx=dv[kk];}
+    var any=days.some(function(x){return dv[x.k]>0;});
+    var bars=any?days.map(function(x){return '<div class="bw"><em>'+(dv[x.k]>0?fmt(dv[x.k]):"")+'</em><i style="height:'+Math.max(6,dv[x.k]/mx*90)+'px"></i></div>';}).join(""):'<div class="emptyb">Pehli kamai daalo, bars yahan aayenge</div>';
+    var strip=days.map(function(x){return '<span>'+x.l+'</span>';}).join("");
+    var me=sum(d.m,d.t,"earn"), ms=sum(d.m,d.t,"spend");
+    var cats={},tot=0; st.items.forEach(function(i){if(i.type==="spend"&&i.date>=d.m){cats[i.cat]=(cats[i.cat]||0)+i.pkr;tot+=i.pkr;}});
+    var ck=Object.keys(cats).sort(function(a,b){return cats[b]-cats[a];});
+    var pct=Math.min(100,st.target>0?me/st.target*100:0);
+    return '<div class="top"><button class="hi" type="button"><span class="av">A</span>Hi, Ali</button><div class="tb"><button class="bell" type="button" id="theme" aria-label="Day ya night mode">'+themeIcon()+'</button><button class="bell" type="button" id="bell" aria-label="Notifications"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9a6 6 0 0 1 12 0c0 6 2 7 2 7H4s2-1 2-7M10 20a2 2 0 0 0 4 0"/></svg></button></div></div>'
+    +'<div class="hero"><div class="hl"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg>Total balance</div>'
+    +'<div class="big">'+fmt(E-S)+'</div><div class="chip"><span>'+(net>=0?"↗":"↘")+'</span>'+fmt(net)+' aaj</div>'
+    +'<button class="plus" type="button" id="p2" aria-label="Nayi entry"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>'
+    +'<div class="bars">'+bars+'</div><div class="strip">'+strip+'</div></div>'
+    +'<div class="upd">Last updated: abhi</div>'
+    +'<div class="sec"><h3>Finances</h3><div class="two"><div><div class="lb">Monthly earnings</div><div class="v e">'+fmt(me)+'</div></div><div><div class="lb">Monthly expenses</div><div class="v s">'+fmt(ms)+'</div></div></div>'
+    +'<div class="small"><div><div class="lb">Aaj ki kamai</div><div class="v e">'+fmt(sum(d.t,d.t,"earn"))+'</div></div><div><div class="lb">7 din ki kamai</div><div class="v e">'+fmt(sum(d.w,d.t,"earn"))+'</div></div>'
+    +'<div><div class="lb">Aaj ka kharcha</div><div class="v s">'+fmt(sum(d.t,d.t,"spend"))+'</div></div><div><div class="lb">7 din ka kharcha</div><div class="v s">'+fmt(sum(d.w,d.t,"spend"))+'</div></div></div></div>'
+    +'<div class="sec"><h3>Targets <button class="link" type="button" data-go="goal">Goals ›</button></h3>'+prow("Aaj (daily)","d")+prow("Is hafta (weekly)","w")+prow("Is mahina (monthly)","m")+'</div>'
+    +'<div class="sec"><h3>Kharcha kahan gaya</h3>'+(ck.length?ck.map(function(k){return '<div class="cb"><span>'+esc(k)+'</span><i style="width:'+Math.max(4,cats[k]/tot*50)+'%"></i><span>'+fmt(cats[k])+'</span></div>';}).join(""):'<p class="emp">Is mahine abhi koi kharcha nahi.</p>')+'</div>';
+  }
+  function hist(){
+    var L=st.items.filter(function(i){return (filt==="all"||i.type===filt)&&(!hd||i.date===hd);}).sort(function(a,b){return a.date<b.date?1:a.date>b.date?-1:b.id-a.id;});
+    var out='<div class="pg"><h2>History</h2><div class="chips">'+[["all","Sab"],["earn","Kamai"],["spend","Kharcha"]].map(function(c){return '<button type="button" data-f="'+c[0]+'" aria-pressed="'+(filt===c[0])+'">'+c[1]+'</button>';}).join("")+'</div>';
+    out+='<div class="dr"><label for="hd">Kisi bhi din ki history dekho</label><div class="drow"><input id="hd" type="date" value="'+hd+'"><button type="button" data-hd="'+iso(new Date())+'">Aaj</button><button type="button" data-hd="'+iso(new Date(Date.now()-864e5))+'">Kal</button></div></div>';
+    if(hd){
+      var de=0,ds=0,dn=0; st.items.forEach(function(i){if(i.date===hd){dn++;if(i.type==="earn")de+=i.pkr;else ds+=i.pkr;}});
+      var dt=tgt("d",hd), dok=dt>0&&de>=dt;
+      out+='<div class="dsum'+(dok?' done':'')+'"><div class="trh"><b>'+new Date(hd+"T00:00:00").toLocaleDateString("en-US",{weekday:"long",day:"numeric",month:"long",year:"numeric"})+'</b><button class="link" type="button" data-hd="">Sab dikhao</button></div>'
+        +'<div class="two" style="margin-top:8px"><div><div class="lb">Kamai</div><div class="v e" style="font-size:1.1rem">'+fmt(de)+'</div></div><div><div class="lb">Kharcha</div><div class="v s" style="font-size:1.1rem">'+fmt(ds)+'</div></div></div>'
+        +'<div class="lb" style="margin-top:8px">Bacha: <b>'+fmt(de-ds)+'</b> · '+dn+' entry</div>'
+        +(dt>0?''+pbar(Math.min(100,de/dt*100))+'<div class="trh"><span class="lb">Daily target '+fmt(dt)+'</span>'+(dok?'<span class="badge">✓ Achieved</span>':'<span class="lb">Pura nahi hua</span>')+'</div>':'')+'</div>';
+    }
+    var last="";
+    L.forEach(function(i){
+      if(!hd&&i.date!==last){out+='<div class="day">'+i.date+'</div>';last=i.date;}
+      out+='<div class="item"><div><b>'+(i.type==="earn"?(i.usd?"Withdraw $"+i.usd:"Kamai"):esc(i.cat))+'</b><small>'+esc(i.note)+(i.type==="earn"&&i.usd?" · rate "+(i.pkr/i.usd).toFixed(1):"")+'</small></div><div class="r"><b class="'+(i.type==="earn"?"e":"s")+'">'+(i.type==="earn"?"+ ":"- ")+fmt(i.pkr)+'</b><br><button type="button" data-del="'+i.id+'">hata do</button></div></div>';
+    });
+    return out+(L.length?"":'<p class="emp">'+(hd?"Is din koi entry nahi.":"Koi entry nahi. Neeche + dabao.")+'</p>')+'</div>';
+  }
+  function goal(){
+    var d=dates(), day=d.n.getDate(), dim=new Date(d.n.getFullYear(),d.n.getMonth()+1,0).getDate(), me=earnedNow("m"), avg=me/day;
+    var h='<div class="pg"><h2>Goals</h2><div class="row3">'
+      +[["d","Daily"],["w","Weekly"],["m","Monthly"]].map(function(x){return '<div><label for="tg'+x[0]+'">'+x[1]+' (PKR)</label><input id="tg'+x[0]+'" type="number" inputmode="numeric" min="0" value="'+(st.tg[x[0]]||"")+'" placeholder="apna amount"></div>';}).join("")
+      +'</div><p class="lb" style="margin:8px 0 0">Apni marzi ka amount likho, wahi target ban jayega. Khali chhodo to us target ki line band rahegi.</p><div class="sec">'+prow("Aaj (daily)","d")+prow("Is hafta (weekly)","w")+prow("Is mahina (monthly)","m")
+      +'<div class="small"><div><div class="lb">Roz ka average</div><div class="v e">'+fmt(avg)+'</div></div><div><div class="lb">Mahine ke end tak</div><div class="v">'+fmt(avg*dim)+'</div></div></div></div>';
+    var g={};
+    st.items.forEach(function(i){var k=pkey(rec,i.date),o=g[k]||(g[k]={e:0,s:0});if(i.type==="earn")o.e+=i.pkr;else o.s+=i.pkr;});
+    var cur=pkey(rec,iso(d.n)); if(!g[cur])g[cur]={e:0,s:0};
+    var keys=Object.keys(g).sort().reverse().slice(0,40), hit=0, best=null;
+    keys.forEach(function(k){var t=tgt(rec,k);if(t>0&&g[k].e>=t)hit++;if(!best||g[k].e>g[best].e)best=k;});
+    h+='<div class="sec"><h3>Record</h3><div class="chips">'+[["d","Din"],["w","Hafta"],["m","Mahina"]].map(function(c){return '<button type="button" data-r="'+c[0]+'" aria-pressed="'+(rec===c[0])+'">'+c[1]+'</button>';}).join("")+'</div>'
+      +'<p class="lb">Target '+hit+' baar pura hua. Sabse zyada: '+(best&&g[best].e>0?plabel(rec,best)+" ("+fmt(g[best].e)+")":"abhi koi nahi")+'</p>';
+    keys.forEach(function(k){
+      var o=g[k],t=tgt(rec,k),done=t>0&&o.e>=t,now=k===cur;
+      h+='<div class="rc'+(done?' done':'')+'"><div class="trh"><b>'+plabel(rec,k)+(now?' <span class="lb">(chal raha)</span>':'')+'</b>'+(done?'<span class="badge">✓ Achieved</span>':(t>0&&!now?'<span class="lb">Pura nahi hua</span>':''))+'</div>'
+        +'<div class="v e" style="font-size:1.05rem">'+fmt(o.e)+' <span class="lb">kamai</span></div>'
+        +(t>0?''+pbar(Math.min(100,o.e/t*100))+'<div class="lb">Target '+fmt(t)+' · Kharcha '+fmt(o.s)+'</div>':'<div class="lb">Target nahi tha · Kharcha '+fmt(o.s)+'</div>')+'</div>';
+    });
+    return h+'</div><div class="sec">'+(window.AndroidBridge?'<button class="go" type="button" id="ntest" style="margin-bottom:10px">Notification test karo</button>':'')+'<button class="go" type="button" id="csv">CSV backup</button><p class="emp">Data isi browser mein save hota hai. Kabhi kabhi backup le lo.</p></div></div>';
+  }
+  function streakPage(){
+    var h='<div class="pg"><h2>Streak</h2>', cur0=iso(new Date());
+    [["d","Daily","din","Aaj"],["w","Weekly","hafte","Is hafte"],["m","Monthly","mahine","Is mahine"]].forEach(function(x){
+      var m=x[0],r=strk(m),t=st.tg[m],cur=pkey(m,cur0);
+      h+='<div class="sk'+(r.cur>0?' on':'')+'"><div class="trh"><b>'+x[1]+' streak</b>'+(r.best>0?'<span class="lb">Best: '+r.best+' '+x[2]+'</span>':'')+'</div>';
+      if(!(t>0)){h+='<p class="lb">Target set nahi. <button class="link" type="button" data-go="goal">Goals mein set karo ›</button></p></div>';return;}
+      var msg;
+      if(r.curOk)msg=x[3]+" ka target pura ✓ Streak "+r.cur+" "+x[2]+".";
+      else if(r.cur>0)msg=x[3]+" ka target pura karo ("+fmt(Math.max(0,t-(r.o[cur]||0)))+" baki), warna streak toot jayegi.";
+      else if(r.best>0)msg="Streak khatam. "+x[3]+" ka target pura karke zero se dobara shuru karo.";
+      else msg=x[3]+" ka target pura karo, streak shuru ho jayegi.";
+      var dots="";
+      for(var i=6;i>=0;i--){
+        var k=addP(m,cur,-i),a=okp(m,k,r.o),lab=m==="d"?new Date(k+"T00:00:00").toLocaleDateString("en-US",{weekday:"narrow"}):m==="w"?k.slice(5):new Date(k+"-01T00:00:00").toLocaleDateString("en-US",{month:"short"});
+        dots+='<div class="dt"><i class="'+(a?"y":k===cur?"p":"n")+'">'+(a?"✓":"")+'</i><span>'+lab+'</span></div>';
+      }
+      h+='<div class="skn"><b>'+r.cur+'</b><span>'+x[2]+'</span></div><p class="hint">'+msg+'</p><div class="dots">'+dots+'</div></div>';
+    });
+    return h+'<p class="emp">Target pura karte raho to streak barhti hai. Koi din, hafta ya mahina miss hua to streak zero ho jati hai.</p></div>';
+  }
+  function pushState(){
+    if(!window.AndroidBridge)return;
+    try{
+      var t=st.tg.d,e=earnedNow("d");
+      AndroidBridge.saveState(JSON.stringify({date:iso(new Date()),target:t>0?t:0,earned:Math.round(e),achieved:t>0&&e>=t,streak:strk("d").cur}));
+    }catch(x){}
+  }
+  function draw(){
+    var v=$("view"), keep=v.scrollTop;
+    v.innerHTML={home:home,hist:hist,streak:streakPage,goal:goal}[tab]();
+    v.scrollTop=keep;
+    pushState();
+    Array.prototype.forEach.call(document.querySelectorAll("nav [data-t]"),function(b){if(b.getAttribute("data-t")===tab)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");});
+  }
+  function go(t){tab=t;draw();$("view").scrollTop=0;}
+
+  var BASE=["Khana","Ghar","Bills","Mobile/Internet","Transport","Gaming","Doosray"], selCat="";
+  if(!st.catList){st.catList=BASE.concat((st.cats||[]).filter(function(c){return BASE.indexOf(c)<0;}));}
+  function fillCats(){
+    var L=st.catList;
+    if(L.indexOf(selCat)<0)selCat=L[0]||"";
+    $("catchips").innerHTML=L.length?L.map(function(c){
+      return '<span class="cc"><button type="button" data-c="'+esc(c)+'" aria-pressed="'+(c===selCat)+'">'+esc(c)+'</button><button type="button" class="cx" data-cx="'+esc(c)+'" aria-label="'+esc(c)+' hata do">×</button></span>';
+    }).join(""):'<span class="lb">Abhi koi category nahi. Neeche apni banao.</span>';
+  }
+  function addCat(){
+    var c=$("catnew").value.trim(); if(!c)return;
+    var ex=st.catList.filter(function(x){return x.toLowerCase()===c.toLowerCase();})[0];
+    if(ex){selCat=ex;}else{st.catList.push(c);selCat=c;save();}
+    $("catnew").value="";fillCats();
+  }
+  $("catchips").onclick=function(e){
+    var b=e.target.closest("button"); if(!b)return;
+    var c=b.getAttribute("data-c"),x=b.getAttribute("data-cx");
+    if(c!==null){selCat=c;fillCats();}
+    else if(x!==null){st.catList=st.catList.filter(function(k){return k!==x;});save();fillCats();}
+  };
+  $("catadd").onclick=addCat;
+  $("catnew").onkeydown=function(e){if(e.key==="Enter"){e.preventDefault();addCat();}};
+  function open(){fillCats();$("sheet").hidden=false;$("date").value=iso(new Date());setType(type);}
+  function setType(t){type=t;$("tE").setAttribute("aria-pressed",t==="earn");$("tS").setAttribute("aria-pressed",t==="spend");$("rS").hidden=t!=="spend";hint();}
+  function hint(){$("hint").textContent="";}
+  $("mid").onclick=open; $("close").onclick=function(){$("sheet").hidden=true;};
+  $("tE").onclick=function(){setType("earn");}; $("tS").onclick=function(){setType("spend");};
+  $("amt").oninput=hint;
+  $("save").onclick=function(){
+    var a=parseFloat($("amt").value), d=$("date").value;
+    if(!(a>0)||!d){$("hint").textContent="Amount aur tareekh daalo.";return;}
+    var it={id:Date.now(),type:type,date:d};
+    if(type==="earn"){it.pkr=a;}
+    else{
+      if(!selCat){$("hint").textContent="Category chuno ya nayi banao.";return;}
+      it.pkr=a;it.cat=selCat;it.note=$("note").value.trim();
+    }
+    var before=flags();st.items.push(it);snapNow();var after=flags(),nm=["Aaj ka","Is hafte ka","Is mahine ka"],msg="Save ho gaya";
+    after.forEach(function(f,i){if(f&&!before[i])msg="Mubarak! "+nm[i]+" target pura. Streak "+strk(["d","w","m"][i]).cur+" "+["din","hafte","mahine"][i];});
+    $("amt").value="";$("note").value="";$("sheet").hidden=true;toast(msg);draw();
+  };
+  document.querySelector("nav").onclick=function(e){var b=e.target.closest("[data-t]");if(b)go(b.getAttribute("data-t"));};
+  $("view").onclick=function(e){
+    var t=e.target.closest("button,[data-q]");if(!t)return;
+    if(t.id==="p2")open();
+    else if(t.id==="theme"){st.theme=isDark()?"light":"dark";save();applyTheme();toast(isDark()?"Night mode on":"Day mode on");draw();}
+    else if(t.id==="bell")toast("Koi nayi notification nahi");
+    else if(t.getAttribute("data-go"))go(t.getAttribute("data-go"));
+    else if(t.hasAttribute("data-hd")){hd=t.getAttribute("data-hd");draw();}
+    else if(t.getAttribute("data-r")){rec=t.getAttribute("data-r");draw();}
+    else if(t.getAttribute("data-f")){filt=t.getAttribute("data-f");draw();}
+    else if(t.getAttribute("data-del")){var id=t.getAttribute("data-del");st.items=st.items.filter(function(i){return String(i.id)!==id;});save();draw();}
+    else if(t.id==="ntest"){var r=AndroidBridge.testNotification();toast(r==="ok"?"Test notification bheji":"Phone settings mein Paisa ki notification allow karo");}
+    else if(t.id==="csv"){
+      var rows=["date,type,pkr,category,note"].concat(st.items.map(function(i){return [i.date,i.type,Math.round(i.pkr),i.cat||"",'"'+(i.note||"").replace(/"/g,'""')+'"'].join(",");}));
+      if(window.AndroidBridge&&AndroidBridge.shareText){AndroidBridge.shareText(rows.join("\n"));return;}
+      var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([rows.join("\n")],{type:"text/csv"}));a.download="paisa.csv";a.click();
+    }
+  };
+  $("view").oninput=function(e){
+    if(e.target.id&&e.target.id.indexOf("tg")===0){var m=e.target.id.slice(2),t=parseFloat(e.target.value);st.tg[m]=t>0?t:0;st.tgUser=true;snapNow();}
+  };
+  $("view").onchange=function(e){if(e.target.id==="hd"){hd=e.target.value||"";draw();return;}if(e.target.id&&e.target.id.indexOf("tg")===0)draw();};
+  applyTheme();
+  draw();
+})();
+</script>
+</body>
+</html>
